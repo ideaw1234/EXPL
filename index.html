@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hope Shelter — UI Mockup</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --g: #06c755;
+            --gd: #04a843;
+            --gp: #085041;
+            --gl: #e6f7ee;
+            --gm: #1D9E75;
+            --sky: #c2e7f7;
+            --bg: #f0f4f2;
+            --tx: #1a2e25;
+            --txs: #5a7a6a;
+            --txh: #9abaaa;
+            --amber: #f5a623;
+            --red: #e74c3c;
+            --blue: #2d8cf0;
+            --r: 14px;
+            --rs: 9px;
+            --rp: 999px;
+            --sh: 0 2px 14px rgba(6, 199, 85, .10);
+            --fn: 'Segoe UI', Tahoma, 'Noto Sans Thai', sans-serif;
+        }
+
+        body {
+            font-family: var(--fn);
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 18px 14px;
+            color: var(--tx);
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .app-icon {
+            width: 38px;
+            height: 38px;
+            background: var(--g);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .top-nav {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            border-radius: var(--rp);
+            border: 1.5px solid #cde8d8;
+            background: #fff;
+            color: var(--txs);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: var(--fn);
+            transition: all .15s;
+        }
+
+        .nav-btn.active {
+            background: var(--g);
+            color: #fff;
+            border-color: var(--g);
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* PHONE SHELL */
+        .phone {
+            width: 295px;
+            border-radius: 32px;
+            border: 3px solid #222;
+            background: #1a1a1a;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .28);
+        }
+
+        .pbar {
+            background: #1a1a1a;
+            padding: 10px 18px 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pbar-time {
+            font-weight: 700;
+            font-size: 13px;
+            color: #fff;
+        }
+
+        .pbar-icons {
+            display: flex;
+            gap: 5px;
+            font-size: 11px;
+            color: #fff;
+        }
+
+        /* LINE CHAT */
+        .line-wrap {
+            background: #fff;
+        }
+
+        .line-nav {
+            background: #fff;
+            padding: 11px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .line-back {
+            font-size: 13px;
+            color: var(--g);
+            font-weight: 700;
+            margin-right: 2px;
+        }
+
+        .badge-99 {
+            background: #ff4757;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 8px;
+        }
+
+        .line-ava {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--gl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            border: 1.5px solid #cde8d8;
+            flex-shrink: 0;
+        }
+
+        .line-info {
+            flex: 1;
+        }
+
+        .line-oaname {
+            font-size: 13px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        .line-oasub {
+            font-size: 10px;
+            color: #aaa;
+        }
+
+        .line-ni {
+            font-size: 17px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .line-body {
+            background: var(--sky);
+            padding: 12px 10px;
+            min-height: 230px;
+        }
+
+        .bubble-wrap {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: flex-start;
+        }
+
+        .bubble-ava {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--gl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .bubble {
+            background: #fff;
+            border-radius: 4px 14px 14px 14px;
+            padding: 10px 12px;
+            font-size: 11.5px;
+            line-height: 1.65;
+            max-width: 90%;
+            color: #222;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, .07);
+        }
+
+        /* RICH MENU */
+        .rm-outer {
+            background: #fff;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .rm-topbar {
+            background: #fff;
+            padding: 6px 12px 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: #aaa;
+        }
+
+        .rm-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .rm-tile {
+            background: #fff;
+            border: 0.5px solid #ebebeb;
+            padding: 9px 4px 8px;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            transition: background .12s;
+        }
+
+        .rm-tile:hover,
+        .rm-wide:hover {
+            background: #f5fff9;
+        }
+
+        .rm-icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .ic-green {
+            background: #e6f7ee;
+        }
+
+        .ic-blue {
+            background: #e6f0ff;
+        }
+
+        .ic-amber {
+            background: #fff5e0;
+        }
+
+        .ic-teal {
+            background: #e0f7f5;
+        }
+
+        .ic-red {
+            background: #ffeaea;
+        }
+
+        .ic-purple {
+            background: #f0e6ff;
+        }
+
+        .rm-lbl {
+            font-size: 9.5px;
+            font-weight: 700;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        .rm-wide {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 14px;
+            cursor: pointer;
+            background: #edfbf3;
+            border-top: 0.5px solid #cde8d8;
+        }
+
+        .rm-wide .rm-icon-box {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+        }
+
+        .rm-wide-lbl {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gp);
+        }
+
+        .rm-wide-sub {
+            font-size: 9px;
+            color: var(--txs);
+        }
+
+        .line-input {
+            background: #fff;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid #eee;
+        }
+
+        .li-box {
+            flex: 1;
+            background: #f5f5f5;
+            border-radius: 20px;
+            padding: 7px 14px;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .li-send {
+            width: 30px;
+            height: 30px;
+            background: var(--g);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        /* WEB PANEL */
+        .s1-wrap {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .web-panel {
+            flex: 1;
+            min-width: 270px;
+        }
+
+        .panel-lbl {
+            font-size: 10px;
+            color: var(--txh);
+            margin-bottom: 8px;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .sub-tabs {
+            display: flex;
+            border-radius: var(--rp);
+            overflow: hidden;
+            border: 1.5px solid #cde8d8;
+            margin-bottom: 14px;
+        }
+
+        .sub-tab {
+            flex: 1;
+            padding: 9px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            background: #fff;
+            color: var(--txs);
+            border: none;
+            font-family: var(--fn);
+            transition: all .15s;
+        }
+
+        .sub-tab.active {
+            background: var(--g);
+            color: #fff;
+        }
+
+        .wcard {
+            background: #fff;
+            border: 1.5px solid #d4eedf;
+            border-radius: var(--r);
+            padding: 16px;
+            box-shadow: var(--sh);
+        }
+
+        .prof-head {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 14px;
+        }
+
+        .prof-ava {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a8e8c8, #5DCAA5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .stat-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .stat-box {
+            flex: 1;
+            background: var(--gl);
+            border-radius: 10px;
+            padding: 10px 6px;
+            text-align: center;
+            border: 1px solid #cde8d8;
+        }
+
+        .stat-num {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gm);
+        }
+
+        .stat-lbl {
+            font-size: 10px;
+            color: var(--txs);
+            margin-top: 1px;
+        }
+
+        .hist-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px 0;
+            border-bottom: 1px solid #eef5f1;
+            font-size: 12px;
+        }
+
+        .hist-row:last-child {
+            border: none;
+            padding-bottom: 0;
+        }
+
+        .badge {
+            padding: 3px 9px;
+            border-radius: var(--rp);
+            font-size: 10px;
+            font-weight: 700;
+            background: var(--gl);
+            color: var(--gp);
+        }
+
+        .badge.pend {
+            background: #fff8e6;
+            color: #a06000;
+        }
+
+        .pts-banner {
+            background: linear-gradient(135deg, #06c755, #04a843);
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .rwd-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .rwd-card {
+            background: #fff;
+            border: 1.5px solid #d4eedf;
+            border-radius: var(--r);
+            padding: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: var(--sh);
+        }
+
+        .rwd-ill {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .rwd-name {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .rwd-pts {
+            font-size: 11px;
+            color: var(--gm);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .rdm-btn {
+            width: 100%;
+            padding: 7px 0;
+            background: var(--g);
+            color: #fff;
+            border: none;
+            border-radius: var(--rp);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--fn);
+            transition: all .15s;
+        }
+
+        .rdm-btn:hover {
+            background: var(--gd);
+        }
+
+        .rdm-btn:disabled {
+            background: #c5d9cc;
+            color: #8aaa9a;
+            cursor: not-allowed;
+        }
+
+        /* FORM */
+        .form-phone {
+            width: 295px;
+            margin: 0 auto;
+            border-radius: 32px;
+            border: 3px solid #222;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
+        }
+
+        .form-hdr {
+            background: var(--g);
+            color: #fff;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-hdr-ico {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .fscroll {
+            background: #fff;
+            padding: 16px;
+            max-height: 560px;
+            overflow-y: auto;
+        }
+
+        .fscroll::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .fscroll::-webkit-scrollbar-thumb {
+            background: #cde8d8;
+            border-radius: 3px;
+        }
+
+        .fs {
+            margin-bottom: 13px;
+        }
+
+        .fl {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--txs);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .fl .req {
+            color: #e74c3c;
+        }
+
+        .fi {
+            width: 100%;
+            padding: 9px 11px;
+            font-size: 12.5px;
+            border: 1.5px solid #d4eedf;
+            border-radius: 10px;
+            background: #f9fdfb;
+            color: var(--tx);
+            font-family: var(--fn);
+            outline: none;
+            transition: border-color .15s;
+        }
+
+        .fi:focus {
+            border-color: var(--g);
+        }
+
+        .frow {
+            display: flex;
+            gap: 8px;
+        }
+
+        .frow .fs {
+            flex: 1;
+        }
+
+        .fta {
+            resize: vertical;
+            line-height: 1.6;
+            min-height: 72px;
+        }
+
+        .photo-z {
+            border: 2px dashed #cde8d8;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            background: #f9fdfb;
+        }
+
+        .photo-note {
+            font-size: 10px;
+            color: #e74c3c;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .sub-btn {
+            width: 100%;
+            padding: 13px;
+            background: var(--g);
+            color: #fff;
+            border: none;
+            border-radius: var(--rp);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--fn);
+            margin-top: 4px;
+        }
+
+        .auto-line {
+            background: var(--gl);
+            border: 1.5px solid #9FE1CB;
+            border-radius: 10px;
+            padding: 9px 11px;
+            font-size: 12.5px;
+            color: #085041;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .auto-line-lbl {
+            font-size: 9px;
+            color: #0F6E56;
+            margin-bottom: 1px;
+        }
+
+        .chip-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 5px 11px;
+            border-radius: var(--rp);
+            border: 1.5px solid #cde8d8;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #f9fdfb;
+            color: var(--txs);
+            transition: all .15s;
+            font-family: var(--fn);
+        }
+
+        .chip.on {
+            background: var(--gl);
+            border-color: #5DCAA5;
+            color: var(--gp);
+        }
+
+        .chip.other {
+            border-style: dashed;
+        }
+
+        .other-input {
+            width: 100%;
+            margin-top: 7px;
+            padding: 8px 11px;
+            font-size: 12px;
+            border: 1.5px solid #d4eedf;
+            border-radius: 10px;
+            background: #f9fdfb;
+            color: var(--tx);
+            font-family: var(--fn);
+            outline: none;
+            display: none;
+        }
+
+        .other-input.show {
+            display: block;
+        }
+
+        /* DASHBOARD */
+        .dash-wrap {
+            max-width: 740px;
+            margin: 0 auto;
+        }
+
+        .dash-hdr {
+            background: linear-gradient(135deg, #085041, #0F6E56);
+            color: #fff;
+            padding: 16px 20px;
+            border-radius: var(--r) var(--r) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dash-body {
+            background: #f2f7f4;
+            padding: 16px;
+            border-radius: 0 0 var(--r) var(--r);
+            border: 1.5px solid #cde8d8;
+            border-top: none;
+        }
+
+        .flt-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .flt-sel {
+            padding: 8px 12px;
+            font-size: 12px;
+            border-radius: var(--rp);
+            border: 1.5px solid #cde8d8;
+            background: #fff;
+            color: var(--tx);
+            cursor: pointer;
+            font-family: var(--fn);
+        }
+
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .kpi {
+            background: #fff;
+            border-radius: var(--rs);
+            padding: 12px 10px;
+            border: 1.5px solid #d4eedf;
+            text-align: center;
+        }
+
+        .kpi-val {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .kpi-lbl {
+            font-size: 10px;
+            color: var(--txs);
+            margin-top: 2px;
+        }
+
+        .kpi.g .kpi-val {
+            color: var(--gm);
+        }
+
+        .kpi.a .kpi-val {
+            color: var(--amber);
+        }
+
+        .kpi.b .kpi-val {
+            color: var(--blue);
+        }
+
+        .kpi.r .kpi-val {
+            color: var(--red);
+        }
+
+        .charts-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .chart-card {
+            background: #fff;
+            border: 1.5px solid #d4eedf;
+            border-radius: var(--r);
+            padding: 14px;
+        }
+
+        .chart-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--tx);
+            margin-bottom: 12px;
+        }
+
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .b-lbl {
+            width: 65px;
+            color: var(--txs);
+            text-align: right;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .b-track {
+            flex: 1;
+            background: #eef5f1;
+            border-radius: 5px;
+            height: 16px;
+            overflow: hidden;
+        }
+
+        .b-fill {
+            height: 100%;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            padding-left: 7px;
+            font-size: 10px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .bg-g {
+            background: var(--gm);
+        }
+
+        .bg-t {
+            background: #5DCAA5;
+        }
+
+        .bg-a {
+            background: #EF9F27;
+        }
+
+        .bg-b {
+            background: #378ADD;
+        }
+
+        .bg-gr {
+            background: #888780;
+        }
+
+        .t-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .t-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .t-lbl {
+            flex: 1;
+            color: var(--txs);
+        }
+
+        .t-bar-w {
+            width: 70px;
+            background: #eef5f1;
+            border-radius: 5px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        .t-bar {
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .t-pct {
+            font-size: 11px;
+            font-weight: 600;
+            width: 30px;
+            text-align: right;
+        }
+
+        .tbl-card {
+            background: #fff;
+            border: 1.5px solid #d4eedf;
+            border-radius: var(--r);
+            overflow: hidden;
+        }
+
+        .tbl {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .tbl th {
+            background: #f2f7f4;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--txs);
+            border-bottom: 1.5px solid #d4eedf;
+        }
+
+        .tbl td {
+            padding: 9px 12px;
+            border-top: 1px solid #eef5f1;
+            color: var(--tx);
+        }
+
+        .tbl tr:hover td {
+            background: #f9fdfb;
+        }
+
+        .sdot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .s-n {
+            background: var(--red);
+        }
+
+        .s-p {
+            background: var(--amber);
+        }
+
+        .s-d {
+            background: var(--gm);
+        }
+
+        /* GUIDE PAGE */
+        .guide-phone {
+            width: 295px;
+            margin: 0 auto;
+            border-radius: 32px;
+            border: 3px solid #222;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
+        }
+
+        .guide-hdr {
+            background: linear-gradient(135deg, #1D9E75, #085041);
+            color: #fff;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-body {
+            background: #f9fdfb;
+            padding: 14px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .guide-body::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .guide-body::-webkit-scrollbar-thumb {
+            background: #cde8d8;
+            border-radius: 3px;
+        }
+
+        .vid-card {
+            background: #1a2e25;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .vid-thumb {
+            width: 100%;
+            height: 110px;
+            background: linear-gradient(135deg, #085041, #1D9E75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .vid-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, .25);
+        }
+
+        .vid-play {
+            width: 46px;
+            height: 46px;
+            background: rgba(255, 255, 255, .92);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .vid-info {
+            padding: 10px 12px 12px;
+        }
+
+        .vid-tag {
+            display: inline-block;
+            background: var(--g);
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: var(--rp);
+            margin-bottom: 5px;
+        }
+
+        .vid-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 3px;
+        }
+
+        .vid-sub {
+            font-size: 10px;
+            color: rgba(255, 255, 255, .6);
+        }
+
+        .info-strip {
+            background: #fff;
+            border-radius: 12px;
+            border: 1.5px solid #d4eedf;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .info-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--tx);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .steps-row {
+            display: flex;
+            gap: 0;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .steps-row::before {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: calc(12.5%);
+            right: calc(12.5%);
+            height: 2px;
+            background: linear-gradient(90deg, var(--g), var(--gm));
+            z-index: 0;
+        }
+
+        .step-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--g);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 2px var(--g);
+        }
+
+        .step-lbl {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--txs);
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .myth-card {
+            background: #fff;
+            border-radius: 12px;
+            border: 1.5px solid #d4eedf;
+            padding: 13px;
+            margin-bottom: 10px;
+            box-shadow: var(--sh);
+        }
+
+        .myth-hdr {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 9px;
+        }
+
+        .myth-ico {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex-shrink: 0;
+        }
+
+        .myth-ttl {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--tx);
+        }
+
+        .truth-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: var(--rp);
+            margin-bottom: 7px;
+        }
+
+        .tt-bad {
+            background: #ffeaea;
+            color: #c0392b;
+        }
+
+        .tt-ok {
+            background: var(--gl);
+            color: var(--gp);
+        }
+
+        .myth-body {
+            font-size: 11.5px;
+            line-height: 1.65;
+            color: var(--txs);
+        }
+
+        .myth-body strong {
+            color: var(--gp);
+        }
+
+        .help-card {
+            background: linear-gradient(135deg, #e6f7ee, #f0fff8);
+            border-radius: 12px;
+            border: 1.5px solid #cde8d8;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .help-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gp);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .help-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 11.5px;
+            color: var(--txs);
+            line-height: 1.5;
+        }
+
+        .help-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .help-dot {
+            width: 22px;
+            height: 22px;
+            background: var(--g);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #fff;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .contact-card {
+            background: #fff;
+            border-radius: 12px;
+            border: 1.5px solid #d4eedf;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .contact-btns {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .c-btn {
+            flex: 1;
+            padding: 10px 6px;
+            border-radius: var(--rp);
+            font-size: 11px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-family: var(--fn);
+        }
+
+        .c-btn.line {
+            background: var(--g);
+            color: #fff;
+        }
+
+        .c-btn.tel {
+            background: #e8f5ff;
+            color: #1565c0;
+        }
+
+        /* MODAL */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-bg.open {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: var(--r);
+            padding: 24px 20px;
+            max-width: 280px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, .22);
+        }
+
+        .modal-ico {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .modal-btns {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .m-cancel {
+            flex: 1;
+            padding: 11px;
+            border: 1.5px solid #cde8d8;
+            background: #fff;
+            border-radius: var(--rp);
+            font-size: 13px;
+            cursor: pointer;
+            font-family: var(--fn);
+            color: var(--txs);
+        }
+
+        .m-ok {
+            flex: 1;
+            padding: 11px;
+            background: var(--g);
+            color: #fff;
+            border: none;
+            border-radius: var(--rp);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--fn);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #085041;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: var(--rp);
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 300;
+            opacity: 0;
+            transition: opacity .3s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-bar">
+        <div class="app-icon">🏠</div>
+        <div>
+            <div style="font-size:16px;font-weight:700;color:var(--gp);">Hope Shelter</div>
+            <div style="font-size:11px;color:var(--txh);">UI Mockup &mdash; 4 หน้าหลัก</div>
+        </div>
+    </div>
+    <div class="top-nav"><button class="nav-btn active" onclick="showScreen(0)">1. LINE OA</button> <button class="nav-btn" onclick="showScreen(1)">2. แบบฟอร์มแจ้ง</button> <button class="nav-btn" onclick="showScreen(2)">3. Dashboard</button> <button class="nav-btn" onclick="showScreen(3)">4. วิธีรับมือ / ช่วยเหลือ</button></div><!-- ===== SCREEN 1: LINE OA ===== -->
+    <div class="screen active" id="screen-0">
+        <div class="s1-wrap">
+            <div>
+                <div style="font-size:10px;color:var(--txh);text-align:center;margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase;">LINE OA</div>
+                <div class="phone">
+                    <div class="pbar"><span class="pbar-time">12:58</span>
+                        <div class="pbar-icons"><span>▐▐▌</span><span>🛜</span><span>🔋</span></div>
+                    </div>
+                    <div class="line-wrap">
+                        <div class="line-nav"><span class="line-back">&lsaquo;</span> <span class="badge-99">99+</span>
+                            <div style="width:8px;"><br></div>
+                            <div class="line-ava">🏠</div>
+                            <div class="line-info">
+                                <div class="line-oaname">Hope Shelter</div>
+                                <div class="line-oasub">Automated responses</div>
+                            </div>
+                            <div style="display:flex;gap:14px;"><span class="line-ni">🔍</span> <span class="line-ni">&equiv;</span></div>
+                        </div>
+                        <div class="line-body">
+                            <div style="text-align:center;margin-bottom:10px;"><span style="font-size:10px;background:rgba(255,255,255,.6);padding:3px 10px;border-radius:10px;color:#666;">วันนี้ 12:58</span></div>
+                            <div class="bubble-wrap">
+                                <div class="bubble-ava">🏠</div>
+                                <div class="bubble">สวัสดีค่ะ ยินดีต้อนรับสู่แชทช่วยเหลือคนไร้บ้านค่ะ 🏠<br>หากต้องการแจ้งการพบเจอคนไร้บ้าน หรือสอบถามข้อมูลเพิ่มเติม สามารถเลือกจากเมนูด้านล่างนี้ได้เลยค่ะ</div>
+                            </div>
+                        </div>
+                        <div class="rm-outer">
+                            <div class="rm-topbar"><span style="font-weight:600;color:#555;">เมนูช่วยเหลือคนไร้บ้าน</span><span style="color:var(--g);">▾</span></div>
+                            <div class="rm-grid" style="grid-template-columns:repeat(3,1fr);">
+                                <div class="rm-tile" onclick="showScreen(1)">
+                                    <div class="rm-icon-box ic-green">📍</div>
+                                    <div class="rm-lbl">แจ้งการพบเจอ<br>คนไร้บ้าน</div>
+                                </div>
+                                <div class="rm-tile" onclick="showSubTab(0)">
+                                    <div class="rm-icon-box ic-purple">👤</div>
+                                    <div class="rm-lbl">โปรไฟล์<br>&amp; รางวัล</div>
+                                </div>
+                                <div class="rm-tile" onclick="showScreen(3)">
+                                    <div class="rm-icon-box ic-teal">📖</div>
+                                    <div class="rm-lbl">คู่มือการแจ้ง<br>ข้อมูลคนไร้บ้าน</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line-input"><span style="font-size:18px;">⊞</span>
+                            <div class="li-box">พิมพ์ข้อความ...</div><span style="font-size:18px;">📷</span>
+                            <div class="li-send">➤</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="web-panel">
+                <div class="panel-lbl">Web App &mdash; โปรไฟล์ &amp; รางวัล</div>
+                <div class="sub-tabs"><button class="sub-tab active" id="st0" onclick="showSubTab(0)">👤 โปรไฟล์</button> <button class="sub-tab" id="st1" onclick="showSubTab(1)">🎁 แลกของรางวัล</button></div>
+                <div id="sub0">
+                    <div class="wcard">
+                        <div class="prof-head">
+                            <div class="prof-ava">😊</div>
+                            <div>
+                                <div style="font-size:15px;font-weight:700;">สมชาย ใจดี</div>
+                                <div style="font-size:11px;color:var(--txh);margin-top:2px;">สมาชิกตั้งแต่ ม.ค. 2567</div>
+                            </div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-box">
+                                <div class="stat-num">12</div>
+                                <div class="stat-lbl">รายงานทั้งหมด</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-num">8</div>
+                                <div class="stat-lbl">ดำเนินการแล้ว</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-num" id="user-points">340</div>
+                                <div class="stat-lbl">แต้มสะสม</div>
+                            </div>
+                        </div>
+                        <div style="font-size:12px;font-weight:700;margin-bottom:8px;">ประวัติการแจ้ง</div>
+                        <div class="hist-row"><span>บางรัก &mdash; ป้ายรถเมล์ 15</span><span class="badge">ดำเนินการแล้ว</span></div>
+                        <div class="hist-row"><span>ปทุมวัน &mdash; สวนลุมฯ</span><span class="badge pend">รอดำเนินการ</span></div>
+                        <div class="hist-row"><span>สาทร &mdash; BTS ช่องนนทรี</span><span class="badge">ดำเนินการแล้ว</span></div>
+                    </div>
+                </div>
+                <div id="sub1" style="display:none;">
+                    <div class="pts-banner">
+                        <div>
+                            <div style="font-size:11px;color:rgba(255,255,255,.85);">แต้มสะสมของคุณ</div>
+                            <div style="font-size:26px;font-weight:700;color:#fff;"><span id="rpts">340</span> แต้ม</div>
+                        </div>
+                        <div style="font-size:36px;">🏆</div>
+                    </div>
+                    <div class="rwd-grid">
+                        <div class="rwd-card">
+                            <div class="rwd-ill" style="background:linear-gradient(135deg,#e8f5ff,#b8dcff);">🎭</div>
+                            <div class="rwd-name">สติกเกอร์ LINE</div>
+                            <div class="rwd-pts">100 แต้ม</div><button class="rdm-btn" onclick="openRedeem(this,100,'สติกเกอร์ LINE')">แลกของรางวัล</button>
+                        </div>
+                        <div class="rwd-card">
+                            <div class="rwd-ill" style="background:linear-gradient(135deg,#fff4e0,#ffd9a0);">☕</div>
+                            <div class="rwd-name">คูปอง Caf&eacute;</div>
+                            <div class="rwd-pts">200 แต้ม</div><button class="rdm-btn" onclick="openRedeem(this,200,'คูปอง Café')">แลกของรางวัล</button>
+                        </div>
+                        <div class="rwd-card">
+                            <div class="rwd-ill" style="background:linear-gradient(135deg,#f0e8ff,#d4b8ff);">🎁</div>
+                            <div class="rwd-name">LINE Gift</div>
+                            <div class="rwd-pts">300 แต้ม</div><button class="rdm-btn" onclick="openRedeem(this,300,'LINE Gift')">แลกของรางวัล</button>
+                        </div>
+                        <div class="rwd-card">
+                            <div class="rwd-ill" style="background:linear-gradient(135deg,#e8fff0,#a8f0c8);">🪙</div>
+                            <div class="rwd-name">LINE Coin</div>
+                            <div class="rwd-pts">150 แต้ม</div><button class="rdm-btn" onclick="openRedeem(this,150,'LINE Coin')">แลกของรางวัล</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- ===== SCREEN 2: FORM ===== -->
+    <div class="screen" id="screen-1">
+        <div style="display:flex;justify-content:center;">
+            <div class="form-phone">
+                <div class="pbar"><span class="pbar-time">12:58</span>
+                    <div class="pbar-icons"><span>▐▐▌</span><span>🛜</span><span>🔋</span></div>
+                </div>
+                <div class="form-hdr">
+                    <div class="form-hdr-ico">📍</div>
+                    <div>
+                        <div style="font-size:14px;font-weight:700;">แจ้งข้อมูลคนไร้บ้าน</div>
+                        <div style="font-size:10px;opacity:.85;">กรุณากรอกข้อมูลให้ครบถ้วน</div>
+                    </div>
+                </div>
+                <div class="fscroll"><!-- ดึงจาก LINE อัตโนมัติ -->
+                    <div class="frow">
+                        <div class="fs"><label class="fl">ชื่อ-นามสกุล</label>
+                            <div class="auto-line">
+                                <div>
+                                    <div class="auto-line-lbl">ดึงจาก LINE</div>สมชาย ใจดี
+                                </div><span style="font-size:11px;color:#0F6E56;">✓</span>
+                            </div>
+                        </div>
+                        <div class="fs"><label class="fl">เบอร์โทร</label>
+                            <div class="auto-line">
+                                <div>
+                                    <div class="auto-line-lbl">ดึงจาก LINE</div>081-234-5678
+                                </div><span style="font-size:11px;color:#0F6E56;">✓</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fs"><label class="fl">เขต <span class="req">*</span></label> <select class="fi" onchange="updateStops(this.value)">&nbsp;<option value="">-- เลือกเขต --</option>
+                            <option>บางรัก</option>
+                            <option>ปทุมวัน</option>
+                            <option>สาทร</option>
+                            <option>พระนคร</option>
+                            <option>คลองเตย</option>&nbsp;
+                        </select></div>
+                    <div class="fs"><label class="fl">ป้ายรถเมล์ <span class="req">*</span></label> <select class="fi" id="stop-sel">
+                            <option value="">-- เลือกเขตก่อน --</option>
+                        </select></div>
+                    <div class="frow">
+                        <div class="fs"><label class="fl">วันที่พบ <span class="req">*</span></label><input type="date" class="fi"></div>
+                        <div class="fs"><label class="fl">เวลาที่พบ <span class="req">*</span></label><input type="time" class="fi"></div>
+                    </div><!-- ลักษณะที่พบ (พิมพ์เอง) -->
+                    <div class="fs"><label class="fl">ลักษณะที่พบ <span class="req">*</span></label> <textarea class="fi fta" placeholder="เช่น ใส่เสื้อดำ สวมหมวก กางเกงยีนส์ขาด ผมยาว ไม่สวมรองเท้า"></textarea></div><!-- พฤติกรรมที่พบ (chips + อื่นๆ) -->
+                    <div class="fs"><label class="fl">พฤติกรรมที่พบ <span class="req">*</span></label>
+                        <div class="chip-wrap" id="behavior-chips"><span class="chip" onclick="toggleChip(this)">นอนริมทาง</span> <span class="chip" onclick="toggleChip(this)">มีสัมภาระมาก</span> <span class="chip" onclick="toggleChip(this)">ขอเงิน</span> <span class="chip" onclick="toggleChip(this)">ไม่ตอบสนอง</span> <span class="chip" onclick="toggleChip(this)">ดูหิวโหย</span> <span class="chip other" onclick="toggleOther(this)">+ อื่นๆ</span></div><input type="text" class="other-input" id="other-input" placeholder="เช่น ใส่เสื้อสีดำ กางเกงขาขาด มีถุงดำใบใหญ่...">
+                    </div>
+                    <div class="fs"><label class="fl">รูปถ่าย (ถ้ามี)</label>
+                        <div class="photo-z">
+                            <div style="font-size:26px;margin-bottom:6px;">📷</div>
+                            <div style="font-size:12px;color:var(--txs);">แตะเพื่อเลือกรูป</div>
+                            <div class="photo-note">⚠ ถ่ายสภาพแวดล้อม ไม่ให้เห็นใบหน้า</div>
+                        </div>
+                    </div><button class="sub-btn">ส่งข้อมูล &rsaquo;</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- ===== SCREEN 3: DASHBOARD ===== -->
+    <div class="screen" id="screen-2">
+        <div class="dash-wrap">
+            <div class="dash-hdr">
+                <div>
+                    <div style="font-size:15px;font-weight:700;">Dashboard เจ้าหน้าที่</div>
+                    <div style="font-size:11px;opacity:.8;">Hope Shelter &mdash; ระบบติดตามข้อมูล</div>
+                </div>
+                <div style="font-size:11px;opacity:.8;">อัปเดต: 20 มี.ค. 2568</div>
+            </div>
+            <div class="dash-body">
+                <div class="flt-row"><select class="flt-sel">
+                        <option>ทุกเขต</option>
+                        <option>บางรัก</option>
+                        <option>ปทุมวัน</option>
+                        <option>สาทร</option>
+                        <option>พระนคร</option>
+                    </select> <select class="flt-sel">
+                        <option>3 เดือนล่าสุด</option>
+                        <option>เดือนนี้</option>
+                        <option>สัปดาห์นี้</option>
+                        <option>ปีนี้</option>
+                    </select> <select class="flt-sel">
+                        <option>ทุกช่วงเวลา</option>
+                        <option>ช่วงเช้า</option>
+                        <option>ช่วงบ่าย</option>
+                        <option>กลางคืน</option>
+                    </select> <select class="flt-sel">
+                        <option>ทุกสถานะ</option>
+                        <option>ใหม่</option>
+                        <option>กำลังดำเนินการ</option>
+                        <option>เสร็จสิ้น</option>
+                    </select></div>
+                <div class="kpi-row">
+                    <div class="kpi g">
+                        <div class="kpi-val">247</div>
+                        <div class="kpi-lbl">รายงานทั้งหมด</div>
+                    </div>
+                    <div class="kpi a">
+                        <div class="kpi-val">38</div>
+                        <div class="kpi-lbl">รอดำเนินการ</div>
+                    </div>
+                    <div class="kpi b">
+                        <div class="kpi-val">172</div>
+                        <div class="kpi-lbl">ดำเนินการแล้ว</div>
+                    </div>
+                    <div class="kpi r">
+                        <div class="kpi-val">37</div>
+                        <div class="kpi-lbl">กำลังดำเนินการ</div>
+                    </div>
+                </div>
+                <div class="charts-row">
+                    <div class="chart-card">
+                        <div class="chart-title">จำนวนพบตามเขต (Top 5)</div>
+                        <div class="bar-row">
+                            <div class="b-lbl">บางรัก</div>
+                            <div class="b-track">
+                                <div class="b-fill bg-g" style="width:90%;">72</div>
+                            </div>
+                        </div>
+                        <div class="bar-row">
+                            <div class="b-lbl">ปทุมวัน</div>
+                            <div class="b-track">
+                                <div class="b-fill bg-t" style="width:70%;">56</div>
+                            </div>
+                        </div>
+                        <div class="bar-row">
+                            <div class="b-lbl">สาทร</div>
+                            <div class="b-track">
+                                <div class="b-fill bg-a" style="width:55%;">44</div>
+                            </div>
+                        </div>
+                        <div class="bar-row">
+                            <div class="b-lbl">พระนคร</div>
+                            <div class="b-track">
+                                <div class="b-fill bg-b" style="width:42%;">34</div>
+                            </div>
+                        </div>
+                        <div class="bar-row">
+                            <div class="b-lbl">คลองเตย</div>
+                            <div class="b-track">
+                                <div class="b-fill bg-gr" style="width:32%;">26</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-title">ช่วงเวลาที่พบบ่อย</div>
+                        <div class="t-row">
+                            <div class="t-dot" style="background:#1D9E75;"><br></div>
+                            <div class="t-lbl">ช่วงเช้า</div>
+                            <div class="t-bar-w">
+                                <div class="t-bar" style="width:18%;background:#1D9E75;"><br></div>
+                            </div>
+                            <div class="t-pct" style="color:#1D9E75;">18%</div>
+                        </div>
+                        <div class="t-row">
+                            <div class="t-dot" style="background:#EF9F27;"><br></div>
+                            <div class="t-lbl">ช่วงบ่าย</div>
+                            <div class="t-bar-w">
+                                <div class="t-bar" style="width:35%;background:#EF9F27;"><br></div>
+                            </div>
+                            <div class="t-pct" style="color:#BA7517;">35%</div>
+                        </div>
+                        <div class="t-row">
+                            <div class="t-dot" style="background:#378ADD;"><br></div>
+                            <div class="t-lbl">ช่วงเย็น</div>
+                            <div class="t-bar-w">
+                                <div class="t-bar" style="width:28%;background:#378ADD;"><br></div>
+                            </div>
+                            <div class="t-pct" style="color:#185FA5;">28%</div>
+                        </div>
+                        <div class="t-row">
+                            <div class="t-dot" style="background:#888780;"><br></div>
+                            <div class="t-lbl">กลางคืน</div>
+                            <div class="t-bar-w">
+                                <div class="t-bar" style="width:19%;background:#888780;"><br></div>
+                            </div>
+                            <div class="t-pct" style="color:#5F5E5A;">19%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tbl-card">
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>วันที่</th>
+                                <th>เขต / สถานที่</th>
+                                <th>พฤติกรรม</th>
+                                <th>ผู้รายงาน</th>
+                                <th>สถานะ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>247</td>
+                                <td>20/03/68</td>
+                                <td>บางรัก &mdash; ป้าย 15</td>
+                                <td>เสื้อดำ นอนริมทาง</td>
+                                <td>สมชาย ใ.</td>
+                                <td>ใหม่</td>
+                            </tr>
+                            <tr>
+                                <td>246</td>
+                                <td>20/03/68</td>
+                                <td>ปทุมวัน &mdash; สวนลุม</td>
+                                <td>ขอเงิน ผู้สูงอายุ</td>
+                                <td>วิภาวดี ส.</td>
+                                <td>กำลังดำเนินการ</td>
+                            </tr>
+                            <tr>
+                                <td>245</td>
+                                <td>19/03/68</td>
+                                <td>สาทร &mdash; BTS ช่องนนทรี</td>
+                                <td>สัมภาระมาก</td>
+                                <td>ประพันธ์ ว.</td>
+                                <td>เสร็จสิ้น</td>
+                            </tr>
+                            <tr>
+                                <td>244</td>
+                                <td>19/03/68</td>
+                                <td>พระนคร &mdash; ท่าเรือ</td>
+                                <td>ดูเจ็บป่วย เด็ก</td>
+                                <td>อนุชา ร.</td>
+                                <td>กำลังดำเนินการ</td>
+                            </tr>
+                            <tr>
+                                <td>243</td>
+                                <td>18/03/68</td>
+                                <td>บางรัก &mdash; MRT สีลม</td>
+                                <td>นอนไม่ตอบสนอง</td>
+                                <td>กมลา จ.</td>
+                                <td>เสร็จสิ้น</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div><!-- ===== SCREEN 4: GUIDE ===== -->
+    <div class="screen" id="screen-3">
+        <div style="display:flex;justify-content:center;">
+            <div class="guide-phone">
+                <div class="pbar"><span class="pbar-time">12:58</span>
+                    <div class="pbar-icons"><span>▐▐▌</span><span>🛜</span><span>🔋</span></div>
+                </div>
+                <div class="guide-hdr">
+                    <div style="width:36px;height:36px;background:rgba(255,255,255,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">🤝</div>
+                    <div>
+                        <div style="font-size:14px;font-weight:700;">วิธีรับมือ &amp; ช่วยเหลือ</div>
+                        <div style="font-size:10px;opacity:.85;">เขาไม่น่ากลัวอย่างที่คิด เราช่วยกันได้</div>
+                    </div>
+                </div>
+                <div class="guide-body"><!-- VDO 1 -->
+                    <div class="vid-card">
+                        <div class="vid-thumb">
+                            <div class="vid-overlay"><br></div>
+                            <div style="text-align:center;position:relative;z-index:1;">
+                                <div style="font-size:28px;margin-bottom:8px;">🎬</div>
+                                <div class="vid-play">▶</div>
+                            </div>
+                        </div>
+                        <div class="vid-info">
+                            <div class="vid-tag">VDO</div>
+                            <div class="vid-title">คนไร้บ้าน... ไม่ได้น่ากลัวอย่างที่คิด</div>
+                            <div class="vid-sub">Hope Shelter &middot; 3 นาที &middot; มีซับไทย</div>
+                        </div>
+                    </div><!-- Steps infographic -->
+                    <div class="info-strip">
+                        <div class="info-title">📋 เมื่อพบคนไร้บ้าน ทำอย่างไร?</div>
+                        <div class="steps-row">
+                            <div class="step-item">
+                                <div class="step-circle">👀</div>
+                                <div class="step-lbl">สังเกต<br>สภาพแวดล้อม</div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-circle">📸</div>
+                                <div class="step-lbl">ถ่ายรูป<br>(ไม่เห็นหน้า)</div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-circle">📍</div>
+                                <div class="step-lbl">แจ้งตำแหน่ง<br>ในแอป</div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-circle">✅</div>
+                                <div class="step-lbl">รอเจ้าหน้าที่<br>ดำเนินการ</div>
+                            </div>
+                        </div>
+                    </div><!-- Myth 1 -->
+                    <div class="myth-card">
+                        <div class="myth-hdr">
+                            <div class="myth-ico ic-red">❌</div>
+                            <div class="myth-ttl">ความเข้าใจผิด #1</div>
+                        </div>
+                        <div class="truth-tag tt-bad">ความเชื่อที่ผิด</div>
+                        <div class="myth-body" style="margin-bottom:8px;">&quot;คนไร้บ้านทุกคนอันตราย ควรหลีกเลี่ยง&quot;</div>
+                        <div class="truth-tag tt-ok">ความจริง ✓</div>
+                        <div class="myth-body"><strong>ส่วนใหญ่ไม่ได้อันตรายเลย</strong> &mdash; หลายคนตกงาน ครอบครัวแตกแยก หรือป่วยโดยไม่มีที่พัก การมองเห็นและแจ้งข้อมูลช่วยให้เขาได้รับการดูแลได้ครับ</div>
+                    </div><!-- Myth 2 -->
+                    <div class="myth-card">
+                        <div class="myth-hdr">
+                            <div class="myth-ico ic-red">❌</div>
+                            <div class="myth-ttl">ความเข้าใจผิด #2</div>
+                        </div>
+                        <div class="truth-tag tt-bad">ความเชื่อที่ผิด</div>
+                        <div class="myth-body" style="margin-bottom:8px;">&quot;ให้เงินเขาตรงๆ ดีที่สุด&quot;</div>
+                        <div class="truth-tag tt-ok">ความจริง ✓</div>
+                        <div class="myth-body"><strong>การแจ้งผ่านระบบดีกว่ามาก</strong> &mdash; เจ้าหน้าที่จะเชื่อมต่อกับบริการสังคมสงเคราะห์ ที่พัก อาหาร และการรักษาพยาบาลได้อย่างยั่งยืน</div>
+                    </div><!-- Myth 3 -->
+                    <div class="myth-card">
+                        <div class="myth-hdr">
+                            <div class="myth-ico ic-red">❌</div>
+                            <div class="myth-ttl">ความเข้าใจผิด #3</div>
+                        </div>
+                        <div class="truth-tag tt-bad">ความเชื่อที่ผิด</div>
+                        <div class="myth-body" style="margin-bottom:8px;">&quot;มีหน่วยงานดูแลอยู่แล้ว เราไม่ต้องทำอะไร&quot;</div>
+                        <div class="truth-tag tt-ok">ความจริง ✓</div>
+                        <div class="myth-body"><strong>ข้อมูลจากประชาชนมีค่ามาก</strong> &mdash; เจ้าหน้าที่ไม่สามารถอยู่ทุกที่พร้อมกันได้ การแจ้งตำแหน่งช่วยให้ช่วยได้ทันท่วงที</div>
+                    </div><!-- How to help -->
+                    <div class="help-card">
+                        <div class="help-title">💚 เราช่วยกันได้อย่างไร?</div>
+                        <div class="help-item">
+                            <div class="help-dot">1</div>
+                            <div><strong style="color:var(--gp);">แจ้งข้อมูลผ่านแอป</strong> &mdash; บอกตำแหน่งและพฤติกรรมที่พบ เจ้าหน้าที่จะรับทราบทันที</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-dot">2</div>
+                            <div><strong style="color:var(--gp);">ไม่ต้องเข้าหาคนเดียว</strong> &mdash; เพียงแจ้งจากระยะปลอดภัย ไม่จำเป็นต้องพูดคุยหรือสัมผัส</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-dot">3</div>
+                            <div><strong style="color:var(--gp);">หากฉุกเฉินจริง</strong> &mdash; โทร 1300 (สายด่วนกระทรวงพัฒนาสังคม) หรือ 191</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-dot">4</div>
+                            <div><strong style="color:var(--gp);">รับแต้มสะสม</strong> &mdash; ทุกการแจ้งข้อมูลได้รับแต้มแลกของรางวัลในแอป</div>
+                        </div>
+                    </div><!-- VDO 2 -->
+                    <div class="vid-card">
+                        <div class="vid-thumb" style="height:76px;">
+                            <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(30,60,150,.75),rgba(45,140,240,.55));"><br></div>
+                            <div style="position:relative;display:flex;align-items:center;gap:12px;padding:0 16px;z-index:1;">
+                                <div class="vid-play" style="width:38px;height:38px;font-size:15px;">▶</div>
+                                <div>
+                                    <div class="vid-tag" style="background:var(--blue);">Infographic</div>
+                                    <div class="vid-title" style="font-size:11px;">สถิติคนไร้บ้านในกรุงเทพ 2567</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Contact -->
+                    <div class="contact-card">
+                        <div style="font-size:12px;font-weight:700;color:var(--tx);">📞 ต้องการช่วยเหลือด่วน</div>
+                        <div class="contact-btns"><button class="c-btn line">💬 ติดต่อ LINE OA</button> <button class="c-btn tel">📞 โทร 1300</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Modal -->
+    <div class="modal-bg" id="modal">
+        <div class="modal">
+            <div class="modal-ico">🎁</div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:6px;" id="modal-title">ยืนยันการแลก</div>
+            <div style="font-size:13px;color:var(--txs);line-height:1.5;" id="modal-sub"><br></div>
+            <div class="modal-btns"><button class="m-cancel" onclick="closeModal()">ยกเลิก</button> <button class="m-ok" onclick="confirmRedeem()">ยืนยัน ✓</button></div>
+        </div>
+    </div>
+    <div class="toast" id="toast"><br></div>
+    <script>
+        function toggleChip(el){el.classList.toggle('on');}
+        function toggleOther(el){
+          el.classList.toggle('on');
+          document.getElementById('other-input').classList.toggle('show',el.classList.contains('on'));
+        }
+        
+        const stops={
+          'บางรัก':['ป้าย 15 (สีลม)','ป้าย 22 (บางรัก)','หน้ารพ.เซนต์หลุยส์'],
+          'ปทุมวัน':['หน้าสวนลุมพินี','ป้าย MBK','ป้าย CentralWorld'],
+          'สาทร':['BTS ช่องนนทรี','ป้ายสาทรเหนือ','ป้ายนราธิวาส'],
+          'พระนคร':['ท่าเรือมหาราช','ป้ายสนามหลวง','ป้ายราชดำเนิน'],
+          'คลองเตย':['ท่าเรือคลองเตย','ป้าย MRT คลองเตย','ตลาดคลองเตย'],
+        };
+        function showScreen(i){
+          document.querySelectorAll('.screen').forEach((s,j)=>s.classList.toggle('active',i===j));
+          document.querySelectorAll('.nav-btn').forEach((b,j)=>b.classList.toggle('active',i===j));
+        }
+        function showSubTab(i){
+          document.querySelectorAll('.sub-tab').forEach((b,j)=>b.classList.toggle('active',i===j));
+          document.getElementById('sub0').style.display=i===0?'block':'none';
+          document.getElementById('sub1').style.display=i===1?'block':'none';
+          showScreen(0);
+        }
+        function updateStops(d){
+          const s=document.getElementById('stop-sel');
+          s.innerHTML='<option value="">-- เลือกป้าย --</option>';
+          (stops[d]||[]).forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);});
+        }
+        let _btn,_cost,_name;
+        function openRedeem(btn,cost,name){
+          _btn=btn;_cost=cost;_name=name;
+          const pts=parseInt(document.getElementById('user-points').textContent);
+          if(pts<cost){showToast('แต้มไม่เพียงพอ 😅');return;}
+          document.getElementById('modal-title').textContent='แลก '+name;
+          document.getElementById('modal-sub').textContent='ใช้ '+cost+' แต้ม รับ '+name+'\nแต้มคงเหลือ '+(pts-cost)+' แต้ม';
+          document.getElementById('modal').classList.add('open');
+        }
+        function closeModal(){document.getElementById('modal').classList.remove('open');}
+        function confirmRedeem(){
+          const pts=parseInt(document.getElementById('user-points').textContent);
+          const np=pts-_cost;
+          document.getElementById('user-points').textContent=np;
+          document.getElementById('rpts').textContent=np;
+          _btn.textContent='แลกแล้ว ✓';_btn.disabled=true;
+          document.querySelectorAll('.rdm-btn:not(:disabled)').forEach(b=>{
+            const c=parseInt(b.closest('.rwd-card').querySelector('.rwd-pts').textContent);
+            if(c>np){b.disabled=true;b.textContent='แต้มไม่พอ';}
+          });
+          closeModal();showToast('แลก '+_name+' สำเร็จแล้ว! 🎉');
+        }
+        function showToast(msg){
+          const t=document.getElementById('toast');
+          t.textContent=msg;t.classList.add('show');
+          setTimeout(()=>t.classList.remove('show'),2800);
+        }
+    </script>
+
+<div style="bottom: 10px; right: 10px; position: absolute;"><a href="https://signatureforemail.com/?utm_source=wth_free_link&utm_medium=external" target="_blank" style="font-size:11px; color: #d0d0d0;">HTML Email Signature Tool</a></p>
+</body>
+
+</html>
