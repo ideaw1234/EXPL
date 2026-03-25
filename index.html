@@ -18,6 +18,11 @@
   --sh:0 2px 14px rgba(6,199,85,.10);
   --fn:'Bai Jamjuree', sans-serif;
 }
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}   
 body{font-family:var(--fn);background:var(--bg);min-height:100vh;padding:18px 14px;color:var(--tx);}
 .top-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
 .app-icon{width:38px;height:38px;background:var(--g);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
@@ -404,7 +409,7 @@ body{font-family:var(--fn);background:var(--bg);min-height:100vh;padding:18px 14
         </div>
         <div class="fs">
           <label class="fl">ป้ายรถเมล์ <span class="req">*</span></label>
-          <select class="fi" id="stop-sel"><option value="">-- เลือกเขตก่อน --</option></select>
+          <select class="fi" id="stop-sel"><option value="">-- กรุณาเลือกเขตก่อน --</option></select>
         </div>
         <div class="frow">
           <div class="fs"><label class="fl">วันที่พบ <span class="req">*</span></label><input type="date" class="fi"></div>
@@ -437,7 +442,7 @@ body{font-family:var(--fn);background:var(--bg);min-height:100vh;padding:18px 14
             <div class="photo-note">⚠ ถ่ายสภาพแวดล้อม ไม่ให้เห็นใบหน้า</div>
           </div>
         </div>
-        <button class="sub-btn">ส่งข้อมูล ›</button>
+        <button class="sub-btn" id="submit-btn" onclick="submitReport(this)">ส่งข้อมูล ›</button>
       </div>
     </div>
   </div>
@@ -687,10 +692,11 @@ body{font-family:var(--fn);background:var(--bg);min-height:100vh;padding:18px 14
                   <div style="font-size:9px; opacity:0.85;">เปิดผ่านแอป TSB Go Plus</div>
                 </div>
               </div>
-              <div style="display:flex; flex-direction:column; gap:6px;">
-                <button onclick="window.open('https://apps.apple.com/th/app/tsb-go-plus/id6463791254', '_blank')" style="background:#fff; color:#0d3b66; border:none; border-radius:var(--rp); padding:5px 10px; font-size:10px; font-weight:700; cursor:pointer; font-family:var(--fn); box-shadow:0 2px 6px rgba(0,0,0,.15); display:flex; align-items:center; gap:4px; justify-content:center;"><span style="font-size:12px;">🍎</span> iOS</button>
-                <button onclick="window.open('https://play.google.com/store/search?q=tsb+go+plus', '_blank')" style="background:#06c755; color:#fff; border:none; border-radius:var(--rp); padding:5px 10px; font-size:10px; font-weight:700; cursor:pointer; font-family:var(--fn); box-shadow:0 2px 6px rgba(0,0,0,.15); display:flex; align-items:center; gap:4px; justify-content:center;"><span style="font-size:12px;">🤖</span> Android</button>
-              </div>
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                <button onclick="openExternalApp('ios')" style="background:#fff; color:#0d3b66; border:none; border-radius:var(--rp); padding:5px 10px; font-size:10px; font-weight:700; cursor:pointer; font-family:var(--fn); box-shadow:0 2px 6px rgba(0,0,0,.15); display:flex; align-items:center; gap:4px; justify-content:center;"><span style="font-size:12px;">🍎</span> iOS</button>
+                
+                <button onclick="openExternalApp('android')" style="background:#06c755; color:#fff; border:none; border-radius:var(--rp); padding:5px 10px; font-size:10px; font-weight:700; cursor:pointer; font-family:var(--fn); box-shadow:0 2px 6px rgba(0,0,0,.15); display:flex; align-items:center; gap:4px; justify-content:center;"><span style="font-size:12px;">🤖</span> Android</button>
+               </div>
             </div>
 
             <div style="background:#fff;border:1.5px solid #d4eedf;border-radius:var(--r);margin-bottom:16px;overflow:hidden;box-shadow:var(--sh);">
@@ -772,6 +778,17 @@ body{font-family:var(--fn);background:var(--bg);min-height:100vh;padding:18px 14
   </div>
 </div>
 
+<div class="modal-bg" id="modal-success">
+  <div class="modal" style="animation: popIn 0.3s ease-out;">
+    <div style="font-size:54px; margin-bottom:10px; color:var(--g);">✅</div>
+    <div style="font-size:18px; font-weight:700; color:var(--g); margin-bottom:8px;">ส่งข้อมูลสำเร็จ!</div>
+    <div style="font-size:13px; color:var(--txs); line-height:1.5; margin-bottom:20px;">
+      ขอบคุณที่ช่วยเหลือสังคม<br>เจ้าหน้าที่จะรีบตรวจสอบโดยเร็วที่สุดครับ
+    </div>
+    <button class="sub-btn" style="margin-top:0;" onclick="closeAllModals()">ตกลง</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -832,6 +849,25 @@ function confirmRedeem(){
     if(c>np){b.disabled=true;b.textContent='แต้มไม่พอ';}
   });
   closeAllModals();showToast('แลก '+_name+' สำเร็จแล้ว! 🎉');
+}
+
+// ---------- Form Submit & Reset ----------
+function submitReport(btn) {
+  const originalText = btn.innerHTML;
+  btn.innerHTML = 'กำลังส่งข้อมูล... ⏳';
+  btn.style.opacity = '0.7';
+  btn.style.pointerEvents = 'none'; 
+  setTimeout(() => {
+    document.getElementById('modal-success').classList.add('open');
+    
+    document.querySelectorAll('#screen-1 input, #screen-1 select, #screen-1 textarea').forEach(el => el.value = '');
+    document.querySelectorAll('#screen-1 .chip').forEach(el => el.classList.remove('on'));
+    document.getElementById('other-input').classList.remove('show'); // ซ่อนช่องพิมพ์อื่นๆ
+
+    btn.innerHTML = originalText;
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+  }, 800);
 }
 
 // ---------- Staff Management Data & Logic ----------
@@ -1154,7 +1190,22 @@ function updateStops(d){
   s.innerHTML='<option value="">-- เลือกป้าย --</option>';
   (stops[d]||[]).forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);});
 }
+// ---------- Deep Link เปิดแอป TSB Go Plus ----------
+function openExternalApp(os) {
+  const appScheme = 'tsbgoplus://'; 
+  let storeUrl = '';
 
+  if (os === 'ios') {
+    storeUrl = 'https://apps.apple.com/th/app/tsb-go-plus/id6463791254';
+  } else if (os === 'android') {
+    storeUrl = 'https://play.google.com/store/apps/details?id=com.tsb.goplus'; 
+  }
+
+  window.location.href = appScheme;
+  setTimeout(() => {
+    window.open(storeUrl, '_blank');
+  }, 1500);
+}
 // Init calls
 window.onload = function() {
   renderStaffGrid();
