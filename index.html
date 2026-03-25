@@ -449,7 +449,7 @@ body{font-family:var(--fn);background:var(--bg);min-height:100vh;padding:18px 14
       <div><div style="font-size:15px;font-weight:700;">Dashboard สำหรับเจ้าหน้าที่</div><div style="font-size:11px;opacity:.8;">Hope Shelter — ระบบจัดการข้อมูลคนไร้บ้าน</div></div>
       <div style="text-align:right;">
         <div style="font-size:12px;font-weight:600;">สวัสดี, แอดมินวิภาวดี 👋</div>
-        <div style="font-size:10px;opacity:.8;">อัปเดต: 20 มี.ค. 2568</div>
+        <div style="font-size:10px;opacity:.8;">อัปเดตล่าสุด: 25 มี.ค. 2569 | 15:36 น.</div>
       </div>
     </div>
     <div class="dash-nav">
@@ -665,6 +665,7 @@ body{font-family:var(--fn);background:var(--bg);min-height:100vh;padding:18px 14
                 <div style="margin-top:6px;"><span style="font-size:9px;color:#085041;background:#e6f7ee;padding:3px 8px;border-radius:8px;font-weight:700;" id="bs-status">กำลังดำเนินการ</span></div>
               </div>
             </div>
+            
             <div style="background:#fff;border:1.5px solid #d4eedf;border-radius:var(--r);padding:14px;margin-bottom:12px;box-shadow:var(--sh);">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
                 <div style="font-size:12px;font-weight:700;">📊 สถิติความหนาแน่น</div>
@@ -678,6 +679,20 @@ body{font-family:var(--fn);background:var(--bg);min-height:100vh;padding:18px 14
               <div style="display:flex;align-items:flex-end;gap:6px;height:80px;margin-bottom:24px;position:relative;border-bottom:1.5px dashed #eef5f1;" id="bs-graph-bars"></div>
             </div>
             
+            <div style="background:linear-gradient(135deg, #185FA5, #0d3b66); border-radius:var(--r); padding:14px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; color:#fff; box-shadow:0 4px 12px rgba(24,95,165,.2);">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:36px; height:36px; background:#fff; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px;">📱</div>
+                <div>
+                  <div style="font-size:12px; font-weight:700; margin-bottom:4px;">เช็คตำแหน่งรถเมล์ GPS</div>
+                  <div style="font-size:9px; opacity:0.85;">เปิดผ่านแอป TSB Go Plus</div>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <button onclick="window.open('https://apps.apple.com/th/app/tsb-go-plus/id6463791254', '_blank')" style="background:#fff; color:#0d3b66; border:none; border-radius:var(--rp); padding:5px 10px; font-size:10px; font-weight:700; cursor:pointer; font-family:var(--fn); box-shadow:0 2px 6px rgba(0,0,0,.15); display:flex; align-items:center; gap:4px; justify-content:center;"><span style="font-size:12px;">🍎</span> iOS</button>
+                <button onclick="window.open('https://play.google.com/store/search?q=tsb+go+plus', '_blank')" style="background:#06c755; color:#fff; border:none; border-radius:var(--rp); padding:5px 10px; font-size:10px; font-weight:700; cursor:pointer; font-family:var(--fn); box-shadow:0 2px 6px rgba(0,0,0,.15); display:flex; align-items:center; gap:4px; justify-content:center;"><span style="font-size:12px;">🤖</span> Android</button>
+              </div>
+            </div>
+
             <div style="background:#fff;border:1.5px solid #d4eedf;border-radius:var(--r);margin-bottom:16px;overflow:hidden;box-shadow:var(--sh);">
               <div onclick="toggleBusRoutes()" style="padding:13px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;">
                 <div style="font-size:12px;font-weight:700;">🚌 รถประจำทางที่จอดที่นี่</div>
@@ -1003,8 +1018,18 @@ function confirmAssign() {
 function bsUpdateGraph() {
   const container = document.getElementById('bs-graph-bars');
   if(!container) return;
+
+  // 1. ดึงค่าว่าตอนนี้ Dropdown เลือกช่วงเวลาไหนอยู่
+  const timeVal = document.getElementById('bs-time-range').value;
+  
+  // 2. เปลี่ยน Labels ให้ตรงกับช่วงเวลา
+  let labels = [];
+  if(timeVal === 'morning') labels = ['06:00','07:00','08:00','09:00','10:00'];
+  else if(timeVal === 'noon') labels = ['10:00','11:00','12:00','13:00','14:00'];
+  else if(timeVal === 'afternoon') labels = ['14:00','15:00','16:00','17:00','18:00'];
+  else if(timeVal === 'evening') labels = ['18:00','19:00','20:00','21:00','22:00'];
+
   const data = [10, 30, 85, 65, 40]; // mock
-  const labels = ['06:00','07:00','08:00','09:00','10:00'];
   const randomFactor = Math.floor(Math.random() * 15) - 5; 
 
   container.innerHTML = data.map((val, i) => {
