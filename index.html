@@ -1190,9 +1190,10 @@ function updateStops(d){
   s.innerHTML='<option value="">-- เลือกป้าย --</option>';
   (stops[d]||[]).forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);});
 }
-// ---------- Deep Link เปิดแอป TSB Go Plus ----------
+// ---------- Deep Link เปิดแอป TSB Go Plus (เวอร์ชันสมบูรณ์) ----------
 function openExternalApp(os) {
-  const appScheme = 'tsbgoplus://'; 
+  // 1. กำหนด URL Scheme ที่เราหาเจอ
+  const appScheme = 'tsbgoplusapp://'; 
   let storeUrl = '';
 
   if (os === 'ios') {
@@ -1201,9 +1202,16 @@ function openExternalApp(os) {
     storeUrl = 'https://play.google.com/store/apps/details?id=com.tsb.goplus'; 
   }
 
+  // 2. สั่งให้เปิดแอปทันที
   window.location.href = appScheme;
+
+  // 3. ระบบสำรอง (Fallback)
+  // เผื่อคนกดไม่มีแอปในเครื่อง ให้รอ 1.5 วินาทีแล้วเด้งไปหน้าดาวน์โหลดใน Store แทน
   setTimeout(() => {
-    window.open(storeUrl, '_blank');
+    // เช็คก่อนว่าหน้าเว็บยังเปิดอยู่ไหม (ถ้าเด้งเข้าแอปไปแล้ว document.hidden จะเป็น true)
+    if (!document.hidden) {
+      window.location.href = storeUrl;
+    }
   }, 1500);
 }
 // Init calls
