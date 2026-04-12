@@ -322,3 +322,16 @@ body{font-family:var(--fn);background:var(--bg);min-height:100vh;padding:18px 14
 
 /* Heatmap circle pulse */
 @keyframes heat-pulse { 0%,100%{opacity:.65;} 50%{opacity:.9;} }
+
+/* ปุ่มไปยังแผนที่ในตาราง */
+.map-goto-btn {
+  background: var(--sky); border: 1.5px solid #f8cdda;
+  border-radius: 8px; padding: 5px 9px; font-size: 14px;
+  cursor: pointer; transition: all .15s; line-height: 1;
+  font-family: var(--fn);
+}
+.map-goto-btn:hover {
+  background: var(--gl); border-color: var(--g);
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(233,30,99,.2);
+}

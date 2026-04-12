@@ -294,20 +294,26 @@ function renderDashTable(dataList) {
   const tbody = document.getElementById('d-table-body');
   
   if (dataList.length === 0) {
-    // แก้ colspan เป็น 6 ให้สอดคล้องกับคอลัมน์ใหม่
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--txs);">ไม่พบข้อมูลที่ตรงกับตัวกรอง</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--txs);">ไม่พบข้อมูลที่ตรงกับตัวกรอง</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = dataList.map(t => `
+  tbody.innerHTML = dataList.map(t => {
+    const hasCoord = !!cuCoords[t.loc];
+    const mapBtn = hasCoord
+      ? `<button onclick="flyToCase('${t.loc.replace(/'/g,"\\'")}', '${t.id}')" class="map-goto-btn" title="ดูในแผนที่">🗺️</button>`
+      : `<span style="color:var(--txh);font-size:11px;">—</span>`;
+    return `
     <tr>
       <td>#${t.id}</td>
       <td style="font-size:11.5px;">${t.time}</td>
-      <td><span class="urg-badge ${t.urgClass}">${t.urgLevel}</span></td> <td>${t.loc}</td>
+      <td><span class="urg-badge ${t.urgClass}">${t.urgLevel}</span></td>
+      <td>${t.loc}</td>
       <td>${t.reporter}</td>
       <td><span class="badge ${t.sClass === 's-n' ? 'bg-red' : ''}" style="${t.sClass === 's-n' ? 'background:#ffeaea;color:#c0392b;' : 'background:var(--gl);color:var(--gp);'}">${t.status}</span></td>
-    </tr>
-  `).join('');
+      <td style="text-align:center;">${mapBtn}</td>
+    </tr>`;
+  }).join('');
 }
 
 
@@ -631,8 +637,36 @@ function openExternalApp(os) {
   }, 1500);
 }
 
+// ไปยังแผนที่ → unspider cluster → เปิด popup เคสนั้นเลย
+function flyToCase(loc, caseId) {
+  const coord = cuCoords[loc];
+  if (!coord) return;
+
+  switchDash(2);
+
+  const doFly = () => {
+    const marker = markerMap[caseId];
+    if (!marker) return;
+
+    // zoomToShowLayer จะ zoom + unspider cluster ให้อัตโนมัติ
+    // แล้ว callback จะ openPopup ทันทีที่หมุดโผล่ออกมา
+    pinLayer.zoomToShowLayer(marker, () => {
+      marker.openPopup();
+    });
+
+    showToast(`📍 เคส #${caseId} — ${loc}`);
+  };
+
+  if (!mapInitialized) {
+    setTimeout(doFly, 250);
+  } else {
+    setTimeout(doFly, 80);
+  }
+}
+
 // ---------- REAL MAP INTEGRATION (Leaflet + MarkerCluster) ----------
 let map, pinLayer, heatLayer;
+const markerMap = {}; // เก็บ reference marker แต่ละเคส { caseId: L.marker }
 
 // พิกัดจริงบริเวณรอบจุฬาฯ
 const cuCoords = {
@@ -738,9 +772,10 @@ function initMap() {
                  t.urgWeight === 2 ? dropIcons.yellow : dropIcons.green;
 
     // เพิ่ม marker + custom popup
-    L.marker([lat, lng], { icon })
-     .bindPopup(makePopupHTML(t), { maxWidth: 220, className: 'cu-popup' })
-     .addTo(pinLayer);
+    const marker = L.marker([lat, lng], { icon })
+      .bindPopup(makePopupHTML(t), { maxWidth: 220, className: 'cu-popup' });
+    marker.addTo(pinLayer);
+    markerMap[t.id] = marker; // เก็บ reference ไว้เปิด popup ทีหลัง
 
     // Heatmap circle
     const hColor = t.urgWeight === 3 ? '#e74c3c' :
