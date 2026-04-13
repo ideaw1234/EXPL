@@ -219,7 +219,13 @@ let dashSortAsc = false;
 function applyDashFilters() {
   const zoneFilter = document.getElementById('d-zone-filter').value;
   const timeFilter = document.getElementById('d-time-filter').value;
-  
+  const searchEl   = document.getElementById('d-search');
+  const searchQ    = searchEl ? searchEl.value.trim().toLowerCase() : '';
+
+  // แสดง/ซ่อนปุ่ม clear
+  const clearBtn = document.getElementById('d-search-clear');
+  if (clearBtn) clearBtn.classList.toggle('visible', searchQ.length > 0);
+
   let filteredData = [...currentDashData];
 
   if (zoneFilter !== 'all') {
@@ -228,7 +234,6 @@ function applyDashFilters() {
 
   const now = new Date().getTime();
   const dayMs = 86400000;
-  
   if (timeFilter === 'today') {
     filteredData = filteredData.filter(item => (now - item.rawDate) <= dayMs);
   } else if (timeFilter === '7days') {
@@ -237,18 +242,26 @@ function applyDashFilters() {
     filteredData = filteredData.filter(item => (now - item.rawDate) <= (dayMs * 30));
   }
 
+  // Live search — ค้นหาใน id, loc, reporter, desc, status
+  if (searchQ) {
+    filteredData = filteredData.filter(item =>
+      ('#' + item.id).toLowerCase().includes(searchQ) ||
+      item.loc.toLowerCase().includes(searchQ) ||
+      item.reporter.toLowerCase().includes(searchQ) ||
+      item.desc.toLowerCase().includes(searchQ) ||
+      item.status.toLowerCase().includes(searchQ) ||
+      item.urgLevel.toLowerCase().includes(searchQ)
+    );
+  }
+
   if (dashSortCol !== '') {
     filteredData.sort((a, b) => {
-      // 📌 [UPDATED] จัดเรียงรวมถึงคอลัมน์ urgWeight เข้าไป
       if (dashSortCol === 'rawDate' || dashSortCol === 'id' || dashSortCol === 'urgWeight') {
         let valA = parseInt(a[dashSortCol]) || 0;
         let valB = parseInt(b[dashSortCol]) || 0;
-        if(dashSortCol === 'urgWeight' && valA === valB) {
-           return b.rawDate - a.rawDate; 
-        }
+        if(dashSortCol === 'urgWeight' && valA === valB) return b.rawDate - a.rawDate;
         return dashSortAsc ? valA - valB : valB - valA;
       }
-      
       let strA = String(a[dashSortCol] || '');
       let strB = String(b[dashSortCol] || '');
       return dashSortAsc ? strA.localeCompare(strB, 'th') : strB.localeCompare(strA, 'th');
@@ -256,9 +269,10 @@ function applyDashFilters() {
   }
 
   const titleStr = currentDashState === 'unchecked' ? 'รายการยังไม่ได้ตรวจสอบ' : 'รายการที่ตรวจสอบแล้ว';
-  document.getElementById('d-table-title').textContent = `${titleStr} (${filteredData.length} รายการ)`;
+  const suffix = searchQ ? ` · ผลค้นหา "${searchQ}"` : '';
+  document.getElementById('d-table-title').textContent = `${titleStr} (${filteredData.length} รายการ)${suffix}`;
 
-  renderDashTable(filteredData);
+  renderDashTable(filteredData, searchQ);
   updateDashSortIcons();
 }
 
@@ -290,27 +304,45 @@ function updateDashSortIcons() {
   });
 }
 
-function renderDashTable(dataList) {
+// highlight คำค้นหาในข้อความ
+function highlightText(text, query) {
+  if (!query) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return String(text).replace(new RegExp(`(${escaped})`, 'gi'),
+    '<span class="search-hl">$1</span>');
+}
+
+function clearSearch() {
+  const el = document.getElementById('d-search');
+  if (el) { el.value = ''; el.focus(); }
+  applyDashFilters();
+}
+
+function renderDashTable(dataList, searchQ = '') {
   const tbody = document.getElementById('d-table-body');
-  
+
   if (dataList.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--txs);">ไม่พบข้อมูลที่ตรงกับตัวกรอง</td></tr>`;
+    const emptyMsg = searchQ
+      ? `ไม่พบเคสที่ตรงกับ "<b>${searchQ}</b>" — ลองคำอื่นดูครับ`
+      : 'ไม่พบข้อมูลที่ตรงกับตัวกรอง';
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--txs);">${emptyMsg}</td></tr>`;
     return;
   }
 
   tbody.innerHTML = dataList.map(t => {
+    const hl = (str) => highlightText(str, searchQ);
     const hasCoord = !!cuCoords[t.loc];
     const mapBtn = hasCoord
       ? `<button onclick="flyToCase('${t.loc.replace(/'/g,"\\'")}', '${t.id}')" class="map-goto-btn" title="ดูในแผนที่">🗺️</button>`
       : `<span style="color:var(--txh);font-size:11px;">—</span>`;
     return `
     <tr>
-      <td>#${t.id}</td>
+      <td>${hl('#' + t.id)}</td>
       <td style="font-size:11.5px;">${t.time}</td>
-      <td><span class="urg-badge ${t.urgClass}">${t.urgLevel}</span></td>
-      <td>${t.loc}</td>
-      <td>${t.reporter}</td>
-      <td><span class="badge ${t.sClass === 's-n' ? 'bg-red' : ''}" style="${t.sClass === 's-n' ? 'background:#ffeaea;color:#c0392b;' : 'background:var(--gl);color:var(--gp);'}">${t.status}</span></td>
+      <td><span class="urg-badge ${t.urgClass}">${hl(t.urgLevel)}</span></td>
+      <td>${hl(t.loc)}</td>
+      <td>${hl(t.reporter)}</td>
+      <td><span class="badge ${t.sClass === 's-n' ? 'bg-red' : ''}" style="${t.sClass === 's-n' ? 'background:#ffeaea;color:#c0392b;' : 'background:var(--gl);color:var(--gp);'}">${hl(t.status)}</span></td>
       <td style="text-align:center;">${mapBtn}</td>
     </tr>`;
   }).join('');
@@ -414,13 +446,15 @@ function renderTaskTable() {
       ? `<span class="link-btn" onclick="openTaskDetails('${t.id}')">ดูรายละเอียด</span>`
       : `<span class="link-btn act" onclick="openAssignTask('${t.id}')">➕ มอบหมายงาน</span>`;
     
+    // ลำดับต้องตรงกับ header: รหัสเคส | วัน-เวลา | ความเร่งด่วน | เขต/สถานที่ | ผู้รับผิดชอบ | สถานะ | การจัดการ
     return `
       <tr>
         <td>#${t.id}</td>
+        <td style="font-size:11.5px;">${t.time}</td>
+        <td><span class="urg-badge ${t.urgClass}">${t.urgLevel}</span></td>
         <td>${t.loc}</td>
         <td>${assigneeHtml}</td>
-        <td style="font-size:11.5px;">${t.time}</td>
-        <td><span class="urg-badge ${t.urgClass}">${t.urgLevel}</span></td> <td><span class="sdot ${t.sClass}"></span>${t.status}</td>
+        <td><span class="sdot ${t.sClass}"></span>${t.status}</td>
         <td>${actionHtml}</td>
       </tr>
     `;
@@ -645,15 +679,10 @@ function flyToCase(loc, caseId) {
   switchDash(2);
 
   const doFly = () => {
-    const marker = markerMap[caseId];
-    if (!marker) return;
-
-    // zoomToShowLayer จะ zoom + unspider cluster ให้อัตโนมัติ
-    // แล้ว callback จะ openPopup ทันทีที่หมุดโผล่ออกมา
-    pinLayer.zoomToShowLayer(marker, () => {
-      marker.openPopup();
-    });
-
+    const entry = markerMap[caseId];
+    if (!entry) return;
+    const { marker } = entry;
+    pinLayer.zoomToShowLayer(marker, () => { marker.openPopup(); });
     showToast(`📍 เคส #${caseId} — ${loc}`);
   };
 
@@ -666,7 +695,27 @@ function flyToCase(loc, caseId) {
 
 // ---------- REAL MAP INTEGRATION (Leaflet + MarkerCluster) ----------
 let map, pinLayer, heatLayer;
-const markerMap = {}; // เก็บ reference marker แต่ละเคส { caseId: L.marker }
+const markerMap = {};  // { caseId: { marker, urgType } }
+const visibleUrgencies = new Set(['red', 'yellow', 'green']);
+
+function toggleUrgencyFilter(urgType) {
+  if (!mapInitialized) return;
+  if (visibleUrgencies.has(urgType)) {
+    if (visibleUrgencies.size === 1) { showToast('⚠️ ต้องแสดงอย่างน้อย 1 ระดับ'); return; }
+    visibleUrgencies.delete(urgType);
+    document.getElementById('map-filter-' + urgType).classList.add('filter-off');
+  } else {
+    visibleUrgencies.add(urgType);
+    document.getElementById('map-filter-' + urgType).classList.remove('filter-off');
+  }
+  // show/hide markers
+  Object.entries(markerMap).forEach(([, { marker, urgType: ut }]) => {
+    if (visibleUrgencies.has(ut)) { if (!pinLayer.hasLayer(marker)) pinLayer.addLayer(marker); }
+    else { if (pinLayer.hasLayer(marker)) pinLayer.removeLayer(marker); }
+  });
+  const shown = Object.values(markerMap).filter(({ urgType: ut }) => visibleUrgencies.has(ut)).length;
+  showToast(`📍 แสดง ${shown} จุด`);
+}
 
 // พิกัดจริงบริเวณรอบจุฬาฯ
 const cuCoords = {
@@ -771,11 +820,11 @@ function initMap() {
     const icon = t.urgWeight === 3 ? dropIcons.red :
                  t.urgWeight === 2 ? dropIcons.yellow : dropIcons.green;
 
-    // เพิ่ม marker + custom popup
+    const urgType = t.urgWeight === 3 ? 'red' : t.urgWeight === 2 ? 'yellow' : 'green';
     const marker = L.marker([lat, lng], { icon })
       .bindPopup(makePopupHTML(t), { maxWidth: 220, className: 'cu-popup' });
     marker.addTo(pinLayer);
-    markerMap[t.id] = marker; // เก็บ reference ไว้เปิด popup ทีหลัง
+    markerMap[t.id] = { marker, urgType };
 
     // Heatmap circle
     const hColor = t.urgWeight === 3 ? '#e74c3c' :
@@ -791,9 +840,110 @@ function initMap() {
 }
 
 
+// ---------- Notification Bell ----------
+const notifData = [];
+
+function initNotifications() {
+  // สร้างการแจ้งเตือน mock จาก uncheckedTasks ด่วนมาก (urgWeight=3)
+  const urgentUnassigned = uncheckedTasks
+    .filter(t => t.urgWeight === 3 && !t.assignee)
+    .slice(0, 8);
+
+  urgentUnassigned.forEach((t, i) => {
+    notifData.push({
+      id: t.id,
+      msg: `เคส #${t.id} · ${t.loc}`,
+      detail: t.desc,
+      urgClass: t.urgClass,
+      color: '#e74c3c',
+      timeAgo: `${i * 3 + 2} นาทีที่แล้ว`
+    });
+  });
+
+  renderNotifBadge();
+  renderNotifList();
+}
+
+function renderNotifBadge() {
+  const badge = document.getElementById('bell-badge');
+  const count = notifData.length;
+  badge.textContent = count > 9 ? '9+' : count;
+  badge.classList.toggle('zero', count === 0);
+}
+
+function renderNotifList() {
+  const list = document.getElementById('notif-list');
+  if (!list) return;
+  if (notifData.length === 0) {
+    list.innerHTML = `<div class="notif-empty">🎉 ไม่มีการแจ้งเตือนใหม่</div>`;
+    return;
+  }
+  list.innerHTML = notifData.map(n => `
+    <div class="notif-item" onclick="handleNotifClick('${n.id}')">
+      <div class="notif-dot" style="background:${n.color};"></div>
+      <div>
+        <div class="notif-msg"><b>${n.msg}</b><br>${n.detail}</div>
+        <div class="notif-time">${n.timeAgo}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleNotifPanel() {
+  const panel = document.getElementById('notif-panel');
+  panel.classList.toggle('open');
+  // ปิดถ้าคลิกข้างนอก
+  if (panel.classList.contains('open')) {
+    setTimeout(() => {
+      document.addEventListener('click', closeNotifOnOutside, { once: true });
+    }, 0);
+  }
+}
+
+function closeNotifOnOutside(e) {
+  const bell = document.getElementById('notif-bell');
+  if (!bell.contains(e.target)) {
+    document.getElementById('notif-panel').classList.remove('open');
+  }
+}
+
+function handleNotifClick(caseId) {
+  document.getElementById('notif-panel').classList.remove('open');
+  // ไปที่ tab สถิติ + scroll ไปหาเคสนั้น
+  showScreen(2);
+  filterDashState('unchecked');
+  const searchEl = document.getElementById('d-search');
+  if (searchEl) { searchEl.value = '#' + caseId; applyDashFilters(); }
+}
+
+function clearNotifs(e) {
+  e.stopPropagation();
+  notifData.length = 0;
+  renderNotifBadge();
+  renderNotifList();
+}
+
+function addNotif(task) {
+  notifData.unshift({
+    id: task.id,
+    msg: `เคส #${task.id} · ${task.loc}`,
+    detail: task.desc,
+    color: task.urgWeight === 3 ? '#e74c3c' : task.urgWeight === 2 ? '#f1a825' : '#27ae60',
+    timeAgo: 'เมื่อกี้'
+  });
+  renderNotifBadge();
+  renderNotifList();
+  // animate badge
+  const badge = document.getElementById('bell-badge');
+  badge.classList.remove('pop');
+  void badge.offsetWidth;
+  badge.classList.add('pop');
+}
+
 // Init calls
 window.onload = function() {
   sortTasks('urgWeight'); 
   renderStaffGrid();
+  initNotifications();
   // initMap() ถูกย้ายไปเรียกใน switchDash(2) แทน (lazy init)
 };

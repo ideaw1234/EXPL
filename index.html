@@ -239,9 +239,24 @@
   <div class="dash-wrap">
     <div class="dash-hdr">
       <div><div style="font-size:15px;font-weight:700;">Dashboard สำหรับเจ้าหน้าที่</div><div style="font-size:11px;opacity:.8;">SafeHaven CU — ระบบจัดการข้อมูลคนไร้บ้านรอบจุฬาฯ</div></div>
-      <div style="text-align:right;">
-        <div style="font-size:12px;font-weight:600;">สวัสดี, แอดมินวิภาวดี 👋</div>
-        <div style="font-size:10px;opacity:.8;">อัปเดตล่าสุด: วันนี้ | 15:36 น.</div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <!-- Notification Bell -->
+        <div class="notif-bell" id="notif-bell" onclick="toggleNotifPanel()" title="การแจ้งเตือน">
+          <span class="bell-icon">🔔</span>
+          <span class="bell-badge" id="bell-badge">0</span>
+          <!-- Panel -->
+          <div class="notif-panel" id="notif-panel">
+            <div class="notif-panel-hdr">
+              <span>การแจ้งเตือน</span>
+              <span class="notif-clear" onclick="clearNotifs(event)">ล้างทั้งหมด</span>
+            </div>
+            <div id="notif-list"></div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px;font-weight:600;">สวัสดี, แอดมินวิภาวดี 👋</div>
+          <div style="font-size:10px;opacity:.8;">อัปเดตล่าสุด: วันนี้ | 15:36 น.</div>
+        </div>
       </div>
     </div>
     <div class="dash-nav">
@@ -287,6 +302,19 @@
               <span id="d-table-title">รายการแจ้งเหตุล่าสุด</span>
             </div>
             <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <!-- Live Search -->
+              <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input
+                  type="text"
+                  id="d-search"
+                  class="search-input"
+                  placeholder="ค้นหา รหัส / สถานที่ / ผู้แจ้ง..."
+                  oninput="applyDashFilters()"
+                  autocomplete="off"
+                />
+                <button class="search-clear" id="d-search-clear" onclick="clearSearch()" title="ล้าง">×</button>
+              </div>
               <select class="fi" style="width:auto;padding:5px 8px;font-size:11px;border-radius:6px;min-height:unset;" id="d-time-filter" onchange="applyDashFilters()">
                 <option value="all">ทุกช่วงเวลา</option>
                 <option value="today">24 ชั่วโมงล่าสุด</option>
@@ -368,22 +396,25 @@
           </div>
         </div>
 
-        <!-- Urgency Stats Bar -->
+        <!-- Urgency Filter Bar (คลิกซ่อน/แสดงหมุด) -->
         <div class="map-stats-bar">
-          <div class="map-stat-chip chip-red">
+          <div class="map-stat-chip chip-red map-filter-chip" id="map-filter-red" onclick="toggleUrgencyFilter('red')">
             <span class="map-stat-dot" style="background:#e74c3c;"></span>
             <span class="map-stat-label">ด่วนมาก</span>
             <span class="map-stat-num" id="map-count-red">—</span>
+            <span class="filter-eye-ico">👁</span>
           </div>
-          <div class="map-stat-chip chip-yellow">
+          <div class="map-stat-chip chip-yellow map-filter-chip" id="map-filter-yellow" onclick="toggleUrgencyFilter('yellow')">
             <span class="map-stat-dot" style="background:#f1a825;"></span>
             <span class="map-stat-label">ปานกลาง</span>
             <span class="map-stat-num" id="map-count-yellow">—</span>
+            <span class="filter-eye-ico">👁</span>
           </div>
-          <div class="map-stat-chip chip-green">
+          <div class="map-stat-chip chip-green map-filter-chip" id="map-filter-green" onclick="toggleUrgencyFilter('green')">
             <span class="map-stat-dot" style="background:#2ecc71;"></span>
             <span class="map-stat-label">ทั่วไป</span>
             <span class="map-stat-num" id="map-count-green">—</span>
+            <span class="filter-eye-ico">👁</span>
           </div>
           <div class="map-stat-chip chip-total">
             <span style="font-size:13px;">📌</span>
